@@ -1,0 +1,6 @@
+{
+  "name": "Broker Mukto",
+  "description": "A broker-free property listing platform for West Bengal",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
