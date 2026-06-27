@@ -8,13 +8,16 @@ import { DEFAULT_GOOGLE_SHEET_URL, DEFAULT_FAST2SMS_KEY } from './config';
  */
 
 export function getGoogleSheetUrl(): string {
+  if (DEFAULT_GOOGLE_SHEET_URL && DEFAULT_GOOGLE_SHEET_URL.trim().startsWith('http')) {
+    return DEFAULT_GOOGLE_SHEET_URL.trim();
+  }
   try {
     const localUrl = localStorage.getItem('bm_google_sheet_url');
     if (localUrl && localUrl.trim()) {
       return localUrl.trim();
     }
   } catch {}
-  return DEFAULT_GOOGLE_SHEET_URL || '';
+  return '';
 }
 
 export function setGoogleSheetUrl(url: string | null | undefined): void {
@@ -41,13 +44,16 @@ export function setGoogleSheetUrl(url: string | null | undefined): void {
 }
 
 export function getFast2SMSKey(): string {
+  if (DEFAULT_FAST2SMS_KEY && DEFAULT_FAST2SMS_KEY.trim() && (DEFAULT_FAST2SMS_KEY as string) !== 'MY_FAST2SMS_KEY') {
+    return DEFAULT_FAST2SMS_KEY.trim();
+  }
   try {
     const localKey = localStorage.getItem('bm_fast2sms_api_key');
     if (localKey && localKey.trim()) {
       return localKey.trim();
     }
   } catch {}
-  return DEFAULT_FAST2SMS_KEY || '';
+  return '';
 }
 
 export function setFast2SMSKey(key: string | null | undefined): void {
@@ -543,5 +549,3 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
-\`;
-`;
