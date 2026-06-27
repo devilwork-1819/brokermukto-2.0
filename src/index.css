@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hind Siliguri", "Inter", system-ui, -apple-system, sans-serif;
+  
+  /* Overwrite default slate palette to map beautifully to custom sky blue shades */
+  --color-slate-50: #f0f9ff;
+  --color-slate-100: #e0f2fe;
+  --color-slate-200: #bae6fd;
+  --color-slate-300: #7dd3fc;
+  --color-slate-400: #38bdf8;
+  --color-slate-500: #0ea5e9;
+  --color-slate-600: #0284c7;
+  --color-slate-700: #0369a1;
+  --color-slate-800: #075985;
+  --color-slate-900: #083c5a; /* Clean premium dark sky blue background for boxes */
+  --color-slate-950: #052a40; /* Even richer sky blue for absolute contrast and depth */
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #031826; /* Deep rich sky-navy cosmic base */
+  color: #f0f9ff;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar matching premium sky blue theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(5, 42, 64, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.5);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.8);
+}
+
+@keyframes marquee {
+  0% { transform: translate3d(100%, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+
