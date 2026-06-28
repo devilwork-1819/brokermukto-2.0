@@ -132,6 +132,7 @@ function saveStoredFast2SMSKeyToDisk(key: string): boolean {
   }
 }
 
+// Retrieve persistently stored Fast2SMS Key on server side
 function getStoredFast2SMSKey(): string {
   if (cachedFast2SMSKey) {
     return cachedFast2SMSKey;
@@ -438,7 +439,6 @@ app.get("/robots.txt", (req: express.Request, res: express.Response) => {
 
   const content = `User-agent: *
 Allow: /
-Disallow: /api/
 
 Sitemap: ${baseUrl}/sitemap.xml
 `;
@@ -773,7 +773,7 @@ const defaultInitialListings = [
     po: 'Berhampore',
     road: 'NH12',
     landmark: 'Near Collectorate',
-    price: '12,00,000',
+    price: '12,0,000',
     priceNum: 1200000,
     negotiable: true,
     mobile: '9123400000',
@@ -852,11 +852,16 @@ async function loadListings(): Promise<any[]> {
       const snapshot = await getDocs(listingsCol);
       const listingsList: any[] = [];
       snapshot.forEach(docSnap => {
-        listingsList.push(docSnap.data());
+        const item = docSnap.data();
+        if (item && item.id !== undefined && item.id !== null && Object.keys(item).length > 1) {
+          listingsList.push(item);
+        } else {
+          console.log(`[Firebase] Skipping empty/invalid listing document ID: ${docSnap.id}`);
+        }
       });
       
       if (listingsList.length === 0) {
-        console.log("[Firebase] Firestore listings collection is empty. Seeding with default initial listings...");
+        console.log("[Firebase] Firestore listings collection is empty or invalid. Seeding with default initial listings...");
         const batch = writeBatch(db);
         for (const item of defaultInitialListings) {
           const docRef = doc(db, "listings", String(item.id));
@@ -868,7 +873,11 @@ async function loadListings(): Promise<any[]> {
         return cachedListings;
       }
       
-      listingsList.sort((a, b) => b.id - a.id);
+      listingsList.sort((a, b) => {
+        const idA = Number(a.id) || 0;
+        const idB = Number(b.id) || 0;
+        return idB - idA;
+      });
       cachedListings = listingsList;
       saveListingsToLocalDisk(cachedListings);
       return cachedListings;
